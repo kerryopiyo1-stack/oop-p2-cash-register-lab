@@ -14,6 +14,10 @@ class TestCashRegister:
     def reset_register_totals(self):
       self.cash_register.total = 0
       self.cash_register_with_discount.total = 0
+      self.cash_register.items = []
+      self.cash_register_with_discount.items = []
+      self.cash_register.previous_transactions = []
+      self.cash_register_with_discount.previous_transactions = []
 
     def test_discount_attribute(self):
         '''takes one optional argument, a discount, on initialization.'''
@@ -29,6 +33,11 @@ class TestCashRegister:
         '''sets an instance variable items to empty list on initialization.'''
         assert(self.cash_register.items == [])
         assert(self.cash_register_with_discount.items == [])
+    
+    def test_previous_transactions_attribute(self):
+        '''sets an instance variable previous_transactions to an empty list on initialization.'''
+        assert(self.cash_register.previous_transactions == [])
+        assert(self.cash_register_with_discount.previous_transactions == [])
 
     def test_add_item(self):
         '''accepts a title and a price and increases the total.'''
