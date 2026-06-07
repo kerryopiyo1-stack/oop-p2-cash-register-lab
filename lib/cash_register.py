@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-
-
 class CashRegister:
     def __init__(self, discount=0):
         self.discount = discount
@@ -20,30 +17,43 @@ class CashRegister:
             print("Not valid discount")
             self._discount = 0
 
-    def add_item(self, item, price, quantity=1):
+    def add_item(self, title, price, quantity=1):
         self.total += price * quantity
 
-        for _ in range(quantity):  
-         self.items.append(item)
+        for _ in range(quantity):
+            self.items.append(title)
 
         self.previous_transactions.append({
-            "item": item,
+            "title": title,
             "price": price,
             "quantity": quantity
         })
 
     def apply_discount(self):
-        if self.discount == 0:
+        if not self.previous_transactions:
             print("There is no discount to apply.")
             return
 
         self.total = self.total - (self.total * self.discount / 100)
+
         print(f"After the discount, the total comes to ${self.total}.")
 
-    def void_last_transaction(self):
-        if self.previous_transactions:
-            last = self.previous_transactions.pop()
-            self.total -= last["price"] * last["quantity"]
+        self.previous_transactions.pop()
 
-            if last["item"] in self.items:
-                self.items.remove(last["item"])
+    def void_last_transaction(self):
+        if not self.previous_transactions:
+            self.total = 0.0
+            return self.total
+
+        last = self.previous_transactions.pop()
+
+        self.total -= last["price"] * last["quantity"]
+
+        for _ in range(last["quantity"]):
+            if last["title"] in self.items:
+                self.items.remove(last["title"])
+
+        if not self.items:
+            self.total = 0.0
+
+        return self.total
